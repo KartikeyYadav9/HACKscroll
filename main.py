@@ -1,6 +1,6 @@
 import sys
 import random
-from PySide6 import QtCore, QtWidgets, QtGui
+from PySide6 import QtCore, QtWidgets, QtGui, QtSvgWidgets
 
 class MyWidget(QtWidgets.QWidget):
     def __init__(self):
@@ -15,10 +15,28 @@ class MyWidget(QtWidgets.QWidget):
 
         self.button.clicked.connect(self.magic)
 
+        ####Top-bar####
+        
+        self.top_bar = QtWidgets.QFrame()
+        self.top_bar.setFixedHeight(100)
+
+        self.layout.addWidget(self.top_bar)
+        
+        top_layout = QtWidgets.QHBoxLayout(self.top_bar)
+        top_layout.setContentsMargins(15, 5, 15, 5)
+
+        self.logo = QtSvgWidgets.QSvgWidget("flag-orpheus-top.svg")
+        self.logo.setFixedSize(100, 100)
+
+        top_layout.addWidget(self.logo)
+        top_layout.addStretch()
+
     @QtCore.Slot()
     def magic(self):
         self.text.setText(random.choice(self.hello))
 
+
+   
 
 
 if __name__ == "__main__":
