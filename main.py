@@ -67,6 +67,25 @@ class MyWidget(QtWidgets.QWidget):
 """)
         top_layout.addWidget(self.title)
         top_layout.addStretch()
+
+        self.scroll = QtWidgets.QScrollArea()
+        self.scroll.setWidgetResizable(True)
+
+        self.scroll.setHorizontalScrollBarPolicy(
+            QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+
+        self.scroll.setVerticalScrollBarPolicy(
+            QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded
+        )
+
+        self.feed = QtWidgets.QWidget()
+        self.feed_layout = QtWidgets.QVBoxLayout(self.feed)
+        self.feed_layout.setContentsMargins(0,0,0,0)
+        self.feed_layout.setSpacing(0)
+
+        self.scroll.setWidget(self.feed)
+        self.layout.addWidget(self.scroll)
         #body
 
     def fetch_short_videos(self):
@@ -77,7 +96,7 @@ class MyWidget(QtWidgets.QWidget):
             "https://www.googleapis.com/youtube/v3/search?"
             "part=snippet"
             "&type=video"
-            "&q=Hack+Club"
+            "&q=Hack+Club+Shorts"
             "&maxResults=10"
             "&key=nahuh"
 
@@ -120,7 +139,7 @@ class MyWidget(QtWidgets.QWidget):
         video.setMinimumHeight(600)
 
 
-        self.layout.addWidget(video)
+        self.feed_layout.addWidget(video)
 
     @QtCore.Slot()
     def magic(self):
