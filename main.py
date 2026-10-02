@@ -1,6 +1,9 @@
 import sys
 import random
 from PySide6 import QtCore, QtWidgets, QtGui, QtSvgWidgets
+from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest
+from PySide6.QtWebEngineWidgets import QWebEngineView
+
 
 class MyWidget(QtWidgets.QWidget):
     def __init__(self):
@@ -73,8 +76,14 @@ class MyWidget(QtWidgets.QWidget):
 
         self.button.clicked.connect(self.magic)
 
-        
+    def fetch_short_videos(self):
+        self.network_manager = QNetworkAccessManager(self)
+        self.network_manager.finished.connect(self.on_videos_fetched)
 
+        api_url = QtCore.QUrl(
+            "https://www.googleapis.com/youtube/v3/search?"
+            "part=snippet&type=video&videoDuration=short&q=coding+shorts&key=YOUR_API_KEY"
+        )
     @QtCore.Slot()
     def magic(self):
         self.text.setText(random.choice(self.hello))
