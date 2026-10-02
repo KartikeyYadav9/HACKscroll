@@ -13,9 +13,9 @@ class MyWidget(QtWidgets.QWidget):
         if font_id == -1:
             print("Font failed to load")
         else:
-            print(QtGui.QFontDatabase.applicationFontFamilies(font_id))
-
-        app.setFont(QtGui.QFont("ShareTechMono-Regular.ttf"))
+            font_family = QtGui.QFontDatabase.applicationFontFamilies(font_id)[0]
+            app.setFont(QtGui.QFont(font_family))
+       
 
         ####Top-bar####
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -34,8 +34,8 @@ class MyWidget(QtWidgets.QWidget):
         self.layout.addWidget(self.top_bar)
         
         top_layout = QtWidgets.QHBoxLayout(self.top_bar)
-        top_layout.setContentsMargins(0,0,0,0)
-        top_layout.setSpacing(0)
+        top_layout.setContentsMargins(10,0,0,0)
+        top_layout.setSpacing(10)
 
         self.logo = QtSvgWidgets.QSvgWidget("flag-orpheus-top.svg")
         self.logo.setFixedSize(50, 35)
@@ -55,24 +55,18 @@ class MyWidget(QtWidgets.QWidget):
         self.title.setStyleSheet("""
             QLabel {
             color : white;
-            font-size: 24px;
+            font-size: 54px;
             font-weight: bold;
-            border-bottom: 0px;
             }
 """)
-        top_layout.addWidget(
-            self.title,
-            0,
-            QtCore.Qt.AlignmentFlag.AlignLeft |
-            QtCore.Qt.AlignmentFlag.AlignVCenter
-        )
-
+        top_layout.addWidget(self.title)
+        top_layout.addStretch()
         #body
 
         self.hello = ['"Making Hack Club, founder of it!" - some nice dude.', 'Hello World', "It's PHANTOM", ]
 
         self.button = QtWidgets.QPushButton("Don't Click Me")
-        self.text = QtWidgets.QLabel(random.choice(self.hello), alignment=QtCore.Qt.AlignCenter)
+        self.text = QtWidgets.QLabel(random.choice(self.hello), alignment=QtCore.Qt.AlignmentFlag.AlignCenter)
         
         self.layout.addWidget(self.text)
         self.layout.addWidget(self.button)
