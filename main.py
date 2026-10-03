@@ -1,10 +1,8 @@
-import os
 import sys
 import random
-from PySide6 import QtCore, QtWidgets, QtGui, QtSvgWidgets, QtNetwork
-from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest
+from PySide6 import QtCore, QtWidgets, QtGui, QtSvgWidgets
 from PySide6.QtWebEngineWidgets import QWebEngineView
-import json
+
 
 
 
@@ -88,56 +86,15 @@ class MyWidget(QtWidgets.QWidget):
         self.layout.addWidget(self.scroll)
         #body
 
-    def fetch_short_videos(self):
-        self.network_manager = QNetworkAccessManager(self)
-        self.network_manager.finished.connect(self.on_video_fetched)
 
-        api_url = QtCore.QUrl(
-            "https://www.googleapis.com/youtube/v3/search?"
-            "part=snippet"
-            "&type=video"
-            "&q=Hack+Club+Shorts"
-            "&maxResults=10"
-            "&key=nahuh"
-
-        )    
-
-        request = QNetworkRequest(api_url)
-        self.network_manager.get(request)
-
-    def on_video_fetched(self, reply):
-        if reply.error() != QtNetwork.QNetworkReply.NetworkError.NoError:
-            print("Error:", reply.errorString())
-            reply.deleteLater()
-            return
-
-        data = json.loads(reply.readAll().data().decode("utf-8"))
-
-        for item in data.get("items", []):
-            video_id = item["id"].get("videoId")
-
-            if video_id:
-                title = item["snippet"]["title"]
-                print("TITLE:", title)
-                print("Video ID:", video_id)
-                print("------------------")
-
-                self.show_video(video_id)
-
-        reply.deleteLater()
-
-
-    def show_video(self, video_id):
+    def show_video(self):
         video = QWebEngineView()
 
         video.setUrl(
             QtCore.QUrl(
-                f"https://www.youtube.com/shorts/{video_id}"
+                "https://www.youtube.com/watch?v=UtF6Jej8yb4"
             )
         )
-
-        video.setMinimumHeight(600)
-
 
         self.feed_layout.addWidget(video)
 
@@ -157,7 +114,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
     widget = MyWidget()
-    widget.resize(463, 692)
+    widget.resize(800, 600)
     widget.show()
-    widget.fetch_short_videos()
+    widget.show_video()
     sys.exit(app.exec())
